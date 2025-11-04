@@ -1,0 +1,80 @@
+/* styles.css - p.win football battle */
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
+
+:root{
+  --bg1:#071422;
+  --bg2:#0b2340;
+  --accent:#10b981;
+  --gold:#facc15;
+  --card:#102431;
+  --text:#e6eef6;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: "Vazirmatn", Tahoma, sans-serif;
+  background: radial-gradient(circle at 10% 10%, rgba(16,185,129,0.06), transparent 20%), linear-gradient(180deg,var(--bg1),var(--bg2));
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+}
+
+/* START SCREEN */
+.start-screen{
+  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(180deg, rgba(2,6,23,0.6), rgba(2,6,23,0.85));
+}
+.start-card{
+  background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  padding:36px;border-radius:14px;max-width:720px;width:100%;text-align:center;
+  box-shadow:0 10px 30px rgba(2,6,23,0.8);
+  border:1px solid rgba(255,255,255,0.03);
+}
+.start-card h1{margin:0;font-size:1rem;opacity:0.8}
+.start-card h2{margin:8px 0 6px;font-size:1.9rem;color:var(--accent)}
+.start-card .sub{opacity:0.9;margin-bottom:18px}
+.start-card button{background:var(--accent);color:#00140e;border:0;padding:12px 20px;border-radius:10px;font-weight:bold;cursor:pointer}
+.start-card button:hover{transform:translateY(-2px)}
+
+/* MAIN */
+.container{max-width:960px;width:100%;margin:auto}
+.title{font-size:1.4rem;text-align:center;margin-top:8px;color:var(--gold)}
+.hint{text-align:center;opacity:0.9;margin-bottom:8px}
+
+.battle{display:flex;justify-content:space-around;align-items:center;margin-top:24px;gap:12px;flex-wrap:wrap}
+.player-card{
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12));
+  padding:14px;border-radius:12px;width:300px;max-width:45%;
+  cursor:pointer;transition:transform .18s ease, box-shadow .18s ease;
+  box-shadow:0 8px 20px rgba(5,35,40,0.45);
+  border:1px solid rgba(255,255,255,0.02);
+  text-align:center;
+}
+.player-card:focus{outline:3px solid rgba(16,185,129,0.18)}
+.player-card:hover{transform:translateY(-6px);box-shadow:0 16px 32px rgba(16,185,129,0.08)}
+.player-card img{width:100%;height:260px;object-fit:cover;border-radius:8px}
+.player-card h3{margin:10px 0 0;color:var(--accent)}
+
+.vs{font-size:28px;font-weight:bold;color:var(--gold)}
+
+.winner{margin-top:20px;font-size:20px;text-align:center;color:#7dd3fc;min-height:26px}
+
+.controls{display:flex;gap:12px;justify-content:center;margin-top:18px}
+.controls button{padding:10px 14px;border-radius:8px;border:0;background:var(--accent);color:#00140e;font-weight:bold;cursor:pointer}
+.controls button:hover{filter:brightness(1.06)}
+
+.player-list{max-width:900px;margin:18px auto;background:rgba(255,255,255,0.02);padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,0.02)}
+.hidden{display:none}
+
+/* responsive */
+@media(max-width:720px){
+  .player-card img{height:180px}
+  .player-card{width:100%}
+  .vs{display:none}
+}
