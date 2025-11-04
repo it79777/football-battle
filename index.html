@@ -1,44 +1,29 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fa">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>p.win presents ⚽ نبرد فوتبالیست‌ها</title>
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>p.win Football Battle ⚽</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- START SCREEN -->
-  <div id="startScreen" class="start-screen">
-    <div class="start-card">
-      <h1>p.win presents</h1>
-      <h2>⚽ نبرد فوتبالیست‌ها</h2>
-      <p class="sub">روی بازیکنی که فکر می‌کنی بهتره کلیک کن — برنده ادامه می‌ده!</p>
-      <button id="startBtn">شروع بازی 🎮</button>
-    </div>
+  <div id="start-screen">
+    <h1>⚽ p.win Football Battle ⚡</h1>
+    <button id="start-btn">شروع بازی</button>
   </div>
 
-  <!-- MAIN GAME -->
-  <main id="game" class="container hidden" role="main" aria-live="polite">
-    <h1 class="title">نبرد فوتبالیست‌ها ⚽</h1>
-    <p class="hint">روی بازیکنی که به نظرت بهتره کلیک کن تا با رقیب جدید روبرو بشه.</p>
-
-    <div id="battle" class="battle">
-      <div class="player-card" id="player1" tabindex="0" role="button" aria-label="بازیکن اول"></div>
-      <div class="vs">VS</div>
-      <div class="player-card" id="player2" tabindex="0" role="button" aria-label="بازیکن دوم"></div>
+  <div id="game-screen" class="hidden">
+    <h2>نبرد فوتبالی!</h2>
+    <div class="players">
+      <div class="player" id="player1"></div>
+      <span class="vs">VS</span>
+      <div class="player" id="player2"></div>
     </div>
+    <div id="winner"></div>
+    <button id="fight-btn">بازی بعدی 🔁</button>
+  </div>
 
-    <div id="winner" class="winner" aria-live="polite"></div>
-    <div class="controls">
-      <button id="restart">شروع مجدد 🔁</button>
-      <button id="showList">مشاهده لیست بازیکنان</button>
-    </div>
-
-    <div id="playerList" class="player-list hidden">
-      <h3>لیست بازیکنان (قابل ویرایش در script.js)</h3>
-      <textarea id="playersTextarea" rows="10" readonly></textarea>
-    </div>
-  </main>
+  <footer>ساخته شده توسط <strong>p.win</strong> 💥</footer>
 
   <script src="script.js"></script>
 </body>
