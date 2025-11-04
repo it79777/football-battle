@@ -1,30 +1,154 @@
 <!DOCTYPE html>
 <html lang="fa">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>p.win Football Battle ⚽🔥</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>🔥 تورنمنت فوتبالی p.win</title>
+  <style>
+    body {
+      font-family: "Vazir", sans-serif;
+      background: linear-gradient(135deg, #1a1a1a, #0b3d91);
+      color: white;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      direction: rtl;
+    }
+
+    h1 {
+      margin-top: 30px;
+      color: #00bfff;
+    }
+
+    .player-btn {
+      background: #00bfff;
+      color: white;
+      border: none;
+      border-radius: 15px;
+      padding: 15px 30px;
+      font-size: 20px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .player-btn:hover {
+      background: #007acc;
+      transform: scale(1.05);
+    }
+
+    button#start, button#next {
+      background: #00ff88;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-size: 18px;
+      cursor: pointer;
+      margin: 15px;
+      transition: 0.2s;
+    }
+
+    button#start:hover, button#next:hover {
+      background: #00cc66;
+      transform: scale(1.05);
+    }
+
+    #result {
+      margin-top: 20px;
+    }
+
+    a {
+      color: #00bfff;
+    }
+
+    h3, h2 {
+      margin: 10px;
+    }
+  </style>
 </head>
 <body>
-  <div id="start-screen">
-    <h1>⚽ p.win Football Battle ⚡</h1>
-    <button id="start-btn">شروع مسابقه</button>
+  <h1>🌐 تورنمنت فوتبالی p.win</h1>
+  <a href="https://www.aparat.com/p_win" target="_blank">🎥 مشاهده کانال Aparat</a>
+
+  <div>
+    <button id="start">شروع بازی</button>
+    <button id="next" style="display:none;">مرحله بعد</button>
   </div>
 
-  <div id="game-screen" class="hidden">
-    <h2>حالت Survivor: برنده‌ها به مرحله بعد میرن 🔥</h2>
-    <div class="players">
-      <div class="player" id="player1"></div>
-      <span class="vs">VS</span>
-      <div class="player" id="player2"></div>
-    </div>
-    <div id="winner"></div>
-    <button id="fight-btn">بازی بعدی 🔁</button>
-  </div>
+  <div id="result"></div>
 
-  <footer>ساخته شده توسط <strong>p.win</strong> 💥</footer>
+  <script>
+    // 🌐 p.win | تورنمنت نهایی فوتبال
+    // لینک کانال: https://www.aparat.com/p_win
 
-  <script src="script.js"></script>
+    const players = [
+      "شرک 🧅", "هری مگوایر 🧱", "آنتونی ⚽", "مسی", "رونالدو", "نیمار", "امباپه", "هالند",
+      "رونالدینیو", "پله", "مارادونا", "زیدان", "بکهم", "کاکا", "ژاوی", "اینیستا", "توتی",
+      "رونی", "بنزما", "صلاح", "مودریچ", "دل پیرو", "ریوالدو", "باتیستوتا", "دروگبا", "جرارد",
+      "لام", "مالدینی", "کاناوارو", "بوفون", "کورتوا", "نویر", "الیسون", "دی بروینه", "کانته",
+      "تری", "پویول", "سانچو", "راکیتیچ", "دیبالا", "هری کین", "سون", "لوکاکو",
+      "فرد", "برونو فرناندز", "وینیسیوس", "رودری", "آلابا", "مارسیلو", "راموس", "کارواخال",
+      "روبرتو کارلوس", "شیرو", "ماتوئیدی", "کروس", "کاسمیرو", "پدری", "گاوی", "اوبامیانگ",
+      "فیرمینو", "مانه", "محرز", "گریلیش", "ریس جیمز", "فودن", "مارتینلی", "ژسوس", "رشفورد",
+      "سانه", "لاوتارو", "اوسیمهن", "والکات", "والنسیا", "زلاتان", "ریبری", "رابن", "تورام", "کولو توره", "وایران", "آدریانو"
+    ];
+
+    let currentChampion = null;
+    let opponent = null;
+    let remainingPlayers = [];
+    const result = document.getElementById("result");
+    const startBtn = document.getElementById("start");
+    const nextBtn = document.getElementById("next");
+
+    startBtn.addEventListener("click", startGame);
+    nextBtn.addEventListener("click", nextRound);
+
+    function startGame() {
+      result.innerHTML = "";
+      remainingPlayers = [...players];
+      shuffle(remainingPlayers);
+      currentChampion = remainingPlayers.pop();
+      opponent = remainingPlayers.pop();
+      showMatch();
+    }
+
+    function showMatch() {
+      result.innerHTML = `
+        <h3>🔥 نبرد بازیکنان: فقط یکی می‌تونه قهرمان بشه!</h3>
+        <div style="display:flex;justify-content:space-around;align-items:center;margin:20px;">
+          <button id="left" class="player-btn">${currentChampion}</button>
+          <h2>VS</h2>
+          <button id="right" class="player-btn">${opponent}</button>
+        </div>
+        <p id="winner"></p>
+      `;
+      document.getElementById("left").onclick = () => chooseWinner(currentChampion);
+      document.getElementById("right").onclick = () => chooseWinner(opponent);
+    }
+
+    function chooseWinner(winner) {
+      currentChampion = winner;
+      document.getElementById("winner").innerHTML = `🏆 برنده: ${winner}`;
+      if (remainingPlayers.length > 0) {
+        nextBtn.style.display = "block";
+      } else {
+        result.innerHTML += `<h2>👑 قهرمان نهایی: ${winner}!</h2>`;
+        nextBtn.style.display = "none";
+      }
+    }
+
+    function nextRound() {
+      if (remainingPlayers.length > 0) {
+        opponent = remainingPlayers.pop();
+        showMatch();
+        nextBtn.style.display = "none";
+      }
+    }
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+  </script>
 </body>
 </html>
