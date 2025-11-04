@@ -22,6 +22,8 @@ const players = [
   "پوگبا", "آسنسیو", "بالاک", "هنری", "برکمپ", "تورس", "ژاوی آلونسو", "رابن"
 ];
 
+let currentPlayers = [];
+
 startBtn.addEventListener("click", () => {
   startScreen.classList.add("hidden");
   gameScreen.classList.remove("hidden");
@@ -29,18 +31,24 @@ startBtn.addEventListener("click", () => {
 });
 
 fightBtn.addEventListener("click", () => {
+  winnerDiv.textContent = "";
   newBattle();
 });
 
 function newBattle() {
   const p1 = players[Math.floor(Math.random() * players.length)];
   const p2 = players[Math.floor(Math.random() * players.length)];
-
   if (p1 === p2) return newBattle();
 
   player1Div.textContent = p1;
   player2Div.textContent = p2;
 
-  const winner = Math.random() < 0.5 ? p1 : p2;
+  player1Div.onclick = () => selectWinner(p1);
+  player2Div.onclick = () => selectWinner(p2);
+}
+
+function selectWinner(winner) {
   winnerDiv.textContent = `🏆 برنده: ${winner}`;
+  player1Div.onclick = null;
+  player2Div.onclick = null;
 }
