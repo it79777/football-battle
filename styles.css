@@ -1,53 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@500&display=swap');
+
 body {
   font-family: "Vazirmatn", sans-serif;
-  background: linear-gradient(135deg, #222, #444);
+  background: url('https://i.imgur.com/pY8pM9x.jpg') no-repeat center center fixed;
+  background-size: cover;
   color: white;
   text-align: center;
-  padding: 50px;
+  padding: 40px;
   direction: rtl;
+  min-height: 100vh;
+}
+
+h1, h2 {
+  text-shadow: 0 0 10px #00ff99;
 }
 
 button {
-  background: #00ff7f;
+  background: #00ff99;
   border: none;
-  padding: 15px 30px;
+  padding: 15px 35px;
   font-size: 18px;
   border-radius: 12px;
   cursor: pointer;
   transition: 0.3s;
+  font-weight: bold;
 }
 
 button:hover {
-  background: #00cc66;
+  background: #00cc77;
+  transform: scale(1.05);
 }
 
 .players {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 40px;
-  margin: 30px 0;
+  gap: 50px;
+  margin: 40px 0;
 }
 
 .player {
-  background: #111;
+  background: rgba(0, 0, 0, 0.7);
   padding: 20px 30px;
-  border-radius: 15px;
+  border-radius: 20px;
   font-size: 22px;
-  min-width: 150px;
-  box-shadow: 0 0 15px #00ff7f;
+  min-width: 160px;
+  box-shadow: 0 0 20px #00ff99;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.player:hover {
+  transform: scale(1.1);
+  background: rgba(0, 255, 150, 0.8);
+  color: black;
 }
 
 .vs {
-  font-size: 26px;
-  color: #ff4444;
+  font-size: 30px;
   font-weight: bold;
+  color: #ff4444;
+  text-shadow: 0 0 10px #ff4444;
 }
 
 #winner {
-  margin-top: 20px;
-  font-size: 24px;
+  margin-top: 25px;
+  font-size: 26px;
   color: gold;
+  text-shadow: 0 0 10px gold;
+  animation: fadeIn 1s ease;
 }
 
 .hidden {
@@ -55,7 +76,13 @@ button:hover {
 }
 
 footer {
-  margin-top: 40px;
-  opacity: 0.7;
+  margin-top: 50px;
+  opacity: 0.8;
   font-size: 14px;
+  text-shadow: 0 0 5px #00ff99;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
 }
