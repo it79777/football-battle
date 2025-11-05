@@ -1,170 +1,332 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>P.Win Football Arena</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>P.Win Football Arena – Battle of Legends</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(180deg, #000428, #004e92);
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
+    :root{
+      --bg1:#001227; --accent:#ffd166; --card:#0f1720; --text:#e6eef6; --green:#10b981;
     }
-    header {
-      text-align: center;
-      width: 100%;
-      padding: 15px;
-      background: rgba(0,0,0,0.5);
-      font-size: 1.4em;
-      color: gold;
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    body{
+      font-family: "Vazirmatn", Tahoma, sans-serif;
+      background: linear-gradient(180deg,var(--bg1),#012b45 120%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      display:flex;
+      flex-direction:column;
+      align-items:stretch;
+      min-height:100vh;
     }
-    #arena {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      flex-wrap: wrap;
-      width: 100%;
-      max-width: 900px;
-      margin-top: 30px;
-      padding: 10px;
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:12px 18px;
+      border-bottom:1px solid rgba(255,255,255,0.03);
+      background:linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.02));
+      position:sticky; top:0; z-index:50;
     }
-    .player {
-      width: 42%;
-      min-width: 200px;
-      background: rgba(255,255,255,0.1);
-      text-align: center;
-      padding: 20px;
-      border-radius: 12px;
-      font-size: 1.2em;
-      cursor: pointer;
-      transition: 0.2s;
-      border: 2px solid transparent;
+    .title { font-weight:800; color:var(--accent); font-size:1.05rem; }
+    .link { color:#9bdff8; text-decoration:none; font-weight:700; font-size:0.95rem; }
+
+    main.stage{
+      flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+      padding:18px; gap:10px;
     }
-    .player:hover {
-      background: rgba(255,255,255,0.2);
+
+    /* arena layout: left - vs - right */
+    .arena {
+      width:100%; max-width:1100px; display:flex; align-items:center; justify-content:space-between;
+      gap:20px; padding:12px;
     }
+
+    .card {
+      width:48%; min-width:240px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12));
+      border-radius:12px; padding:18px; text-align:center; cursor:pointer; transition:transform .15s, box-shadow .15s;
+      border:1px solid rgba(255,255,255,0.02);
+      box-shadow:0 8px 20px rgba(2,6,23,0.6);
+      display:flex; flex-direction:column; gap:8px; align-items:center; justify-content:center;
+    }
+    .card.left { align-items:flex-end; direction:rtl; } /* float right visually for RTL */
+    .card.right { align-items:flex-start; direction:ltr; } /* show English left-to-right inside */
+
+    .card h2 { margin:0; font-size:1.25rem; color:var(--accent); font-weight:800; }
+    .card p.fa { margin:0; font-size:1rem; color:#cfe; opacity:0.95; }
+    .card p.en { margin:0; font-size:0.95rem; color:#9bdff8; opacity:0.95; }
+
+    .vs {
+      width:4%; min-width:56px; text-align:center; color:var(--accent); font-weight:900; font-size:1.15rem;
+    }
+
     .winner {
-      border: 2px solid gold;
-      color: gold;
+      box-shadow:0 0 30px rgba(255,215,0,0.28);
+      border:1px solid rgba(255,215,0,0.25);
+      transform:scale(1.02);
+      color:var(--accent);
     }
-    #info {
-      margin-top: 20px;
-      color: #aef;
+
+    .controls {
+      display:flex; gap:12px; align-items:center; justify-content:center; margin-bottom:6px;
     }
-    #start {
-      background: #0f0;
-      color: #001;
-      border: none;
-      padding: 10px 25px;
-      border-radius: 10px;
-      font-size: 1em;
-      cursor: pointer;
-      font-weight: bold;
-      margin-top: 30px;
+    .btn {
+      background:var(--green); color:#00140e; border:0; padding:10px 14px; border-radius:8px; font-weight:800; cursor:pointer;
     }
+
+    .info {
+      margin-top:12px; color:#cde; font-weight:700; text-align:center;
+    }
+
     footer {
-      margin-top: auto;
-      padding: 10px;
-      text-align: center;
-      font-size: 0.9em;
-      background: rgba(0,0,0,0.4);
-      width: 100%;
+      padding:12px; text-align:center; border-top:1px solid rgba(255,255,255,0.03); background:linear-gradient(180deg, rgba(0,0,0,0.02), transparent);
+      font-size:0.95rem;
+    }
+    footer a{ color:#9bdff8; text-decoration:none; font-weight:700 }
+
+    @media(max-width:880px){
+      .arena{flex-direction:column; align-items:stretch}
+      .card{width:100%; min-width:unset}
+      .vs{display:none}
+      .card.left{align-items:center; direction:rtl}
+      .card.right{align-items:center; direction:rtl}
     }
   </style>
 </head>
 <body>
-  <header>🏆 P.Win Football Arena</header>
-  <button id="start">Start Game</button>
-  <div id="arena"></div>
-  <div id="info"></div>
-  <footer><a href="https://www.aparat.com/p_win" style="color:skyblue;text-decoration:none;">aparat.com/p_win</a></footer>
+  <header>
+    <div class="title">🏆 P.Win Football Arena – Battle of Legends</div>
+    <a class="link" href="https://www.aparat.com/p_win" target="_blank">🎥 aparat.com/p_win</a>
+  </header>
+
+  <main class="stage">
+    <div class="controls">
+      <button id="startBtn" class="btn">Start Game</button>
+    </div>
+
+    <section id="arena" class="arena" aria-live="polite">
+      <!-- left card, vs, right card injected here -->
+    </section>
+
+    <div id="info" class="info">Double-click (desktop) or double-tap (mobile) on the player you choose as winner.</div>
+  </main>
+
+  <footer>© P.Win — <a href="https://www.aparat.com/p_win" target="_blank">aparat.com/p_win</a></footer>
 
   <script>
+    // ===== players: english + persian names (includes Shrek, Antony, Harry Maguire) =====
     const players = [
-      "Shrek", "Antony", "Harry Maguire", "Messi", "Ronaldo", "Neymar", "Mbappe", "Haaland",
-      "Zidane", "Ronaldinho", "Beckham", "Kaka", "Xavi", "Iniesta", "Totti", "Ramos",
-      "Suarez", "Lewandowski", "Modric", "Salah", "De Bruyne", "Griezmann", "Kroos", "Busquets",
-      "Rooney", "Lampard", "Gerrard", "Maldini", "Buffon", "Weah", "Baggio", "Bale",
-      "Pedri", "Gavi", "Bruno Fernandes", "Foden", "Mane", "Firmino", "Vardy", "Harry Kane",
-      "Rashford", "Robertson", "Koulibaly", "Richarlison", "Di Maria", "Verratti", "Ibrahimovic",
-      "Ribery", "Casillas", "Ozil", "Dybala", "Vinicius Jr", "Alisson", "Cancelo", "Kante",
-      "Sterling", "Grealish", "Walker", "Varane", "Courtois", "Mount", "Son", "Dembele",
-      "De Jong", "Chiesa", "Perisic", "Bonucci", "Chiellini", "Lloris", "Oblak", "Ziyech",
-      "Hakimi", "Shaw", "Rice", "Fernandez", "Musiala", "Rodri", "Felix", "Araujo",
-      "Alaba", "Reece James", "Martinez", "Szczesny", "Pele", "Maradona", "Figo", "Benzema",
-      "Modeste", "David Villa", "Tevez", "Torres", "Morata", "Gundogan", "Pique", "Varatti",
-      "Hummels", "Boateng", "Dani Alves", "Chiellini", "Kompany", "Bonucci"
+      {en:"Shrek", fa:"شرک 🧅"},
+      {en:"Antony", fa:"آنتونی ⚽"},
+      {en:"Harry Maguire", fa:"هری مگوایر 🧱"},
+      {en:"Lionel Messi", fa:"مسی"},
+      {en:"Cristiano Ronaldo", fa:"کریستیانو رونالدو"},
+      {en:"Neymar Jr", fa:"نیمار"},
+      {en:"Kylian Mbappé", fa:"کیلیان ام‌باپه"},
+      {en:"Erling Haaland", fa:"ارلینگ هالند"},
+      {en:"Ronaldinho", fa:"رونالدینیو"},
+      {en:"Pelé", fa:"پله"},
+      {en:"Diego Maradona", fa:"دیگو مارادونا"},
+      {en:"Zinedine Zidane", fa:"زین‌الدین زیدان"},
+      {en:"David Beckham", fa:"دیوید بکام"},
+      {en:"Kaká", fa:"کاکا"},
+      {en:"Xavi", fa:"ژاوی"},
+      {en:"Andrés Iniesta", fa:"اینیستا"},
+      {en:"Francesco Totti", fa:"فرانچسکو توتی"},
+      {en:"Robin van Persie", fa:"روبین فن پرسی"},
+      {en:"Roberto Carlos", fa:"روبرتو کارلوس"},
+      {en:"Sergio Ramos", fa:"سرخیو راموس"},
+      {en:"Luis Figo", fa:"لوئیس فیگو"},
+      {en:"Luis Suárez", fa:"لوئیس سوارز"},
+      {en:"Robert Lewandowski", fa:"روبرت لواندوفسکی"},
+      {en:"Luka Modrić", fa:"لوکا مودریچ"},
+      {en:"Karim Benzema", fa:"کریم بنزما"},
+      {en:"Mohamed Salah", fa:"محمد صلاح"},
+      {en:"Kevin De Bruyne", fa:"کوین دی‌بروینه"},
+      {en:"Paul Pogba", fa:"پل پوگبا"},
+      {en:"Antoine Griezmann", fa:"آنتوان گریزمان"},
+      {en:"Toni Kroos", fa:"تونی کروس"},
+      {en:"Sergio Busquets", fa:"سرخیو بوسکتس"},
+      {en:"Wayne Rooney", fa:"وین رونی"},
+      {en:"Frank Lampard", fa:"فرانک لمپارد"},
+      {en:"Steven Gerrard", fa:"استیون جرارد"},
+      {en:"Alan Shearer", fa:"آلن شیرر"},
+      {en:"Paolo Maldini", fa:"پائولو مالدینی"},
+      {en:"Gianluigi Buffon", fa:"جان‌لوئیجی بوفون"},
+      {en:"Yashin", fa:"یاشین"},
+      {en:"George Weah", fa:"جورج وه‌آ"},
+      {en:"Roberto Baggio", fa:"روبرتو باجو"},
+      {en:"Gareth Bale", fa:"گرت بیل"},
+      {en:"John Terry", fa:"جان تری"},
+      {en:"Antonio Rudiger", fa:"آنتونیو رودیگر"},
+      {en:"Marcos Llorente", fa:"مارکوس یورنته"},
+      {en:"Pedri", fa:"پدری"},
+      {en:"Gavi", fa:"گاوی"},
+      {en:"Bruno Fernandes", fa:"برونو فرناندز"},
+      {en:"Jadon Sancho", fa:"جادون سانچو"},
+      {en:"Phil Foden", fa:"فیل فودن"},
+      {en:"Roberto Firmino", fa:"روبرتو فیرمینو"},
+      {en:"Sadio Mané", fa:"سادیو مانه"},
+      {en:"Jamie Vardy", fa:"جیمی واردی"},
+      {en:"Harry Kane", fa:"هری کین"},
+      {en:"Marcus Rashford", fa:"مارکوس راشفورد"},
+      {en:"Gabriel Jesus", fa:"گابریل ژسوس"},
+      {en:"Lautaro Martínez", fa:"لاوتارو مارتینز"},
+      {en:"Andrew Robertson", fa:"اندرو رابرتسون"},
+      {en:"Kalidou Koulibaly", fa:"کالیودو کولیبالی"},
+      {en:"Richarlison", fa:"ریچارلیسون"},
+      {en:"Ángel Di María", fa:"آنجلو دی‌ماریا"},
+      {en:"Marco Verratti", fa:"مارکو وراتی"},
+      {en:"Zlatan Ibrahimović", fa:"زلاتان ابراهیموویچ"},
+      {en:"Franck Ribéry", fa:"فرانک ریبری"},
+      {en:"Ivan Perišić", fa:"ایوان پریشیچ"},
+      {en:"Adriano", fa:"آدریانو"},
+      {en:"Iker Casillas", fa:"ایکر کاسیاس"},
+      {en:"Mesut Özil", fa:"مزوت اوزیل"},
+      {en:"Paulo Dybala", fa:"پائولو دیبالا"},
+      {en:"Édouard Mendy", fa:"ادوارد مندی"},
+      {en:"Vinícius Júnior", fa:"وینیسیوس جونیور"},
+      {en:"Alisson Becker", fa:"آلیسون بکر"},
+      {en:"João Cancelo", fa:"ژائو کانسلو"},
+      {en:"Fabinho", fa:"فابینیو"},
+      {en:"N'Golo Kanté", fa:"انگولو کانته"},
+      {en:"Raheem Sterling", fa:"رحیم استرلینگ"},
+      {en:"Jack Grealish", fa:"جک گریلش"},
+      {en:"Kyle Walker", fa:"کایل واکر"},
+      {en:"Raphaël Varane", fa:"رافائل واران"},
+      {en:"Thibaut Courtois", fa:"تیبو کورتوا"},
+      {en:"Mason Mount", fa:"میسون ماونت"},
+      {en:"Son Heung-min", fa:"سون هیونگ‌مین"},
+      {en:"Ousmane Dembélé", fa:"عثمان دمبله"},
+      {en:"Frenkie de Jong", fa:"فرنکی دی‌یونگ"},
+      {en:"Federico Chiesa", fa:"فيدريكو کیه‌زا"},
+      {en:"Miralem Pjanić", fa:"میرالِم پیانیچ"},
+      {en:"Ivan Rakitić", fa:"ایوان راکیتیچ"},
+      {en:"Giorgio Chiellini", fa:"جیورجیو کیه‌لینی"},
+      {en:"Gianluigi Donnarumma", fa:"جیانلوئیجی دوناروما"},
+      {en:"Wojciech Szczęsny", fa:"ووچچ شچسنی"}
     ];
 
-    let remaining = [];
+    // make exactly 100 by padding if needed
+    while(players.length < 100){
+      players.push({en: "Player " + (players.length+1), fa: "بازیکن " + (players.length+1)});
+    }
+
+    // game state
+    let pool = [];
     let champion = null;
     let opponent = null;
-    const arena = document.getElementById("arena");
-    const info = document.getElementById("info");
-    const startBtn = document.getElementById("start");
+    let round = 0;
+    const arena = document.getElementById('arena');
+    const info = document.getElementById('info');
+    const startBtn = document.getElementById('startBtn');
 
-    startBtn.addEventListener("click", startGame);
+    // double-tap detection
+    let lastTap = 0;
+    const dblTimeout = 300;
 
-    function startGame() {
-      remaining = shuffle([...players]);
-      champion = remaining.pop();
-      opponent = remaining.pop();
-      renderMatch();
-      startBtn.style.display = "none";
+    startBtn.addEventListener('click', () => {
+      pool = shuffle([...players]);
+      champion = pool.pop();
+      opponent = pool.pop();
+      round = 1;
+      render();
+      startBtn.style.display = 'none';
+      info.textContent = "Double-click (desktop) / double-tap (mobile) to choose winner.";
+    });
+
+    function render(){
+      arena.innerHTML = '';
+
+      // left (player on right visually because RTL) — we'll keep classes left/right for CSS alignment
+      const leftCard = createCard(champion, 'left');
+      const vs = document.createElement('div'); vs.className = 'vs'; vs.innerHTML = 'VS';
+      const rightCard = createCard(opponent, 'right');
+
+      // append in order for visual left/right
+      arena.appendChild(leftCard);
+      arena.appendChild(vs);
+      arena.appendChild(rightCard);
     }
 
-    function renderMatch() {
-      arena.innerHTML = "";
-      const p1 = createCard(champion, true);
-      const p2 = createCard(opponent, false);
-      arena.appendChild(p1);
-      arena.appendChild(p2);
-      info.textContent = `Remaining Players: ${remaining.length}`;
-    }
+    function createCard(playerObj, side){
+      const div = document.createElement('div');
+      div.className = 'card ' + (side==='left' ? 'left' : 'right');
+      div.setAttribute('data-name', playerObj.en);
+      // show english then persian (both)
+      const en = document.createElement('p'); en.className = 'en'; en.textContent = playerObj.en;
+      const fa = document.createElement('p'); fa.className = 'fa'; fa.textContent = playerObj.fa;
+      const title = document.createElement('h2'); title.textContent = playerObj.en;
 
-    function createCard(name, isChampion) {
-      const div = document.createElement("div");
-      div.className = "player" + (isChampion ? " winner" : "");
-      div.textContent = name;
-      div.addEventListener("dblclick", () => selectWinner(name));
-      div.addEventListener("touchend", (e) => handleDoubleTap(e, name));
+      // build: title (EN), then FA under
+      div.appendChild(title);
+      div.appendChild(fa);
+
+      // highlight if champion
+      if (playerObj === champion) div.classList.add('winner');
+
+      // dblclick for desktop
+      div.addEventListener('dblclick', () => onSelect(playerObj));
+      // touch double-tap for mobile
+      div.addEventListener('touchend', (e) => {
+        const now = Date.now();
+        if (now - lastTap <= dblTimeout) {
+          e.preventDefault();
+          onSelect(playerObj);
+          lastTap = 0;
+        } else {
+          lastTap = now;
+        }
+      });
+
       return div;
     }
 
-    let lastTap = 0;
-    function handleDoubleTap(e, name) {
-      const now = Date.now();
-      if (now - lastTap < 300) {
-        e.preventDefault();
-        selectWinner(name);
+    function onSelect(selected){
+      // selected becomes champion
+      champion = selected;
+      // if pool empty -> final
+      if (pool.length === 0) {
+        render();
+        info.innerHTML = `👑 Final Champion: <strong>${champion.en} — ${champion.fa}</strong>`;
+        return;
       }
-      lastTap = now;
+      // else replace opponent with next from pool
+      opponent = pool.pop();
+      round++;
+      render();
+      // highlight winner briefly (add winner class)
+      highlightChampion();
+      info.textContent = `Stage ${round}`;
     }
 
-    function selectWinner(name) {
-      champion = name;
-      if (remaining.length > 0) {
-        opponent = remaining.pop();
-        renderMatch();
-      } else {
-        arena.innerHTML = `<div class='player winner'>🏆 Champion: ${champion}</div>`;
-        info.textContent = "Game Over!";
-      }
+    function highlightChampion(){
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(c => {
+        const nm = c.getAttribute('data-name');
+        if (nm === champion.en) c.classList.add('winner');
+        else c.classList.remove('winner');
+      });
     }
 
-    function shuffle(arr) {
-      for (let i = arr.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
+    // fisher-yates shuffle
+    function shuffle(arr){
+      for (let i = arr.length -1; i>0; i--){
+        const j = Math.floor(Math.random()*(i+1));
         [arr[i], arr[j]] = [arr[j], arr[i]];
       }
       return arr;
     }
+
+    // small keyboard convenience: Enter to start
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && startBtn.style.display !== 'none') startBtn.click();
+    });
+
+    // initial info
+    info.textContent = 'Press "Start Game" to begin. Double-click/double-tap to choose winner.';
   </script>
 </body>
 </html>
