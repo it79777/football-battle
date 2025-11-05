@@ -4,35 +4,214 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>🏆 P.Win Football Arena – Battle of Legends</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    /* ---------------- theme / layout ---------------- */
+    :root{
+      --bg-dark:#031020;
+      --panel:#0f1720;
+      --accent:#ffd166;
+      --green:#10b981;
+      --text:#e6eef6;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0}
+    body{
+      font-family: "Vazirmatn", Tahoma, sans-serif;
+      background:
+        radial-gradient(circle at 50% 20%, rgba(16,185,129,0.03), transparent 15%),
+        linear-gradient(180deg, rgba(2,6,23,1), rgba(3,16,32,1));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      display:flex;
+      flex-direction:column;
+      align-items:stretch;
+      min-height:100vh;
+    }
+
+    /* header */
+    header.site {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:14px 18px;
+      border-bottom:1px solid rgba(255,255,255,0.03);
+      background:linear-gradient(180deg, rgba(0,0,0,0.12), rgba(0,0,0,0.05));
+      position:sticky;
+      top:0;
+      z-index:50;
+    }
+    .brand h1{margin:0;font-size:1.1rem;color:var(--accent)}
+    .brand p{margin:0;font-size:0.8rem;opacity:0.9}
+    header.site a { color:#9bdff8; text-decoration:none; font-weight:600 }
+
+    /* main stage */
+    main.stage{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding:18px;
+      gap:10px;
+    }
+
+    .controls {
+      width:100%;
+      max-width:1100px;
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      align-items:center;
+      margin-bottom:6px;
+    }
+    .btn {
+      background:var(--green);
+      color:#00140e;
+      border:0;
+      padding:10px 14px;
+      border-radius:10px;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 6px 18px rgba(16,185,129,0.08);
+    }
+    .btn:active{transform:translateY(1px)}
+
+    .status {
+      color:#9bdff8;
+      font-weight:700;
+      margin-left:8px;
+    }
+
+    /* arena (cards) */
+    .arena{
+      width:100%;
+      max-width:1100px;
+      display:flex;
+      gap:18px;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      padding:8px;
+    }
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12));
+      width:320px;
+      max-width:46%;
+      border-radius:12px;
+      padding:12px;
+      text-align:center;
+      cursor:pointer;
+      transition: transform .18s ease, box-shadow .18s ease, border .18s;
+      border:1px solid rgba(255,255,255,0.03);
+      box-shadow:0 14px 30px rgba(2,6,23,0.7);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+    }
+
+    .card h3{margin:8px 0 0;font-size:1.05rem;color:var(--accent)}
+    .card p.meta{margin:6px 0 0;color:#9bdff8;font-weight:600}
+
+    .card.small{width:46%;min-width:240px}
+    .card.vs{display:flex;align-items:center;justify-content:center;background:transparent;box-shadow:none;border:0;width:fit-content}
+
+    .thumb-placeholder{
+      width:100%;
+      height:220px;
+      border-radius:8px;
+      background:linear-gradient(90deg,#0c2330,#09212c);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:rgba(255,255,255,0.08);
+      font-size:2.4rem;
+      letter-spacing:2px;
+      margin-bottom:10px;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+
+    /* winner effect */
+    .winner {
+      box-shadow: 0 0 40px rgba(255,215,0,0.35), 0 10px 40px rgba(255,215,0,0.07) !important;
+      transform: scale(1.03);
+      border:1px solid rgba(255,215,0,0.35);
+    }
+
+    /* info footer inside */
+    .info{
+      max-width:1100px;
+      margin-top:8px;
+      width:100%;
+      padding:12px;
+      text-align:center;
+      color:#cde;
+      font-weight:700;
+    }
+
+    footer.site {
+      padding:12px 18px;
+      text-align:center;
+      border-top:1px solid rgba(255,255,255,0.03);
+      font-size:0.95rem;
+      background:linear-gradient(180deg, rgba(0,0,0,0.04), transparent);
+    }
+    footer.site a{color:#9bdff8;text-decoration:none}
+
+    /* responsive */
+    @media(max-width:920px){
+      .card{width:46%}
+      .thumb-placeholder{height:180px}
+    }
+    @media(max-width:600px){
+      .arena{gap:12px;padding:6px}
+      .card{width:92%}
+      .thumb-placeholder{height:160px}
+      .brand h1{font-size:1rem}
+    }
+
+  </style>
 </head>
 <body>
-  <header class="top">
+  <header class="site">
     <div class="brand">
       <h1>🏆 P.Win Football Arena</h1>
       <p class="subtitle">Battle of Legends</p>
     </div>
-    <nav><a href="https://www.aparat.com/p_win" target="_blank">🎥 کانال Aparat</a></nav>
+    <nav><a href="https://www.aparat.com/p_win" target="_blank">🎥 aparat.com/p_win</a></nav>
   </header>
 
   <main class="stage">
     <div class="controls">
-      <button id="start" class="btn">شروع بازی</button>
-      <button id="next" class="btn hidden">مرحله بعد</button>
-      <span id="round" class="round hidden"></span>
+      <button id="startBtn" class="btn">شروع بازی</button>
+      <div id="status" class="status">آماده</div>
     </div>
 
-    <section id="arena" class="arena">
-      <!-- کارت‌ها در اینجا رندر می‌شن -->
+    <section id="arena" class="arena" aria-live="polite">
+      <!-- cards injected here -->
     </section>
 
     <div id="info" class="info"></div>
   </main>
 
-  <footer class="footer">
-    <a href="https://www.aparat.com/p_win" target="_blank">https://www.aparat.com/p_win</a>
+  <footer class="site">
+    © P.Win — All rights reserved — <a href="https://www.aparat.com/p_win" target="_blank">aparat.com/p_win</a>
   </footer>
 
-  <script src="script.js"></script>
-</body>
-</html>
+  <script>
+  /***********************
+   P.Win Survivor — 100 players, double-tap/dblclick to choose winner
+   - Put this single file (index.html) on GitHub Pages / Netlify
+   - Double-click (desktop) or double-tap (mobile) to pick winner; winner stays, loser removed, next opponent appears automatically
+   - Silent (no audio)
+  ***********************/
+
+  // ===== players (100 names) =====
+  const players = [
+    "شرک 🧅","آنتونی ⚽","هری مگوایر 🧱",
+    "مسی","کریستیانو رونالدو","نیمار","کیلین امباپه","ارلینگ هالند",
+    "رونالدینیو","پله","دیگو مارادونا","زین‌الدین زیدان","بکهام","کاکا","ژاوی","اینیستا",
+    "فرانچسکو توتی","رابین فن پرسی","روبرتو کارلوس","سرخیو راموس","کارلوس آلبرتو",
+    "لوئیز فیگو","زیوبا","لوئیز سوارز","روبرتو لواندوفسکی","کیلیان","لوئیز فیگو2",
+    "لوکا مودریچ","کریم بنزما","مهمت شبان","
