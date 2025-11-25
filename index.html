@@ -1,178 +1,337 @@
-<!doctype html>
-<html lang="en" dir="rtl">
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
   <title>P.Win Football Arena – Battle of Legends</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <style>
-    :root{
-      --bg1:#001227; --accent:#ffd166; --card:#0f1720; --text:#e6eef6; --green:#10b981;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0}
-    body{
-      font-family: "Vazirmatn", Tahoma, sans-serif;
-      background: linear-gradient(180deg,var(--bg1),#012b45 120%);
-      color:var(--text);
-      -webkit-font-smoothing:antialiased;
-      display:flex;
-      flex-direction:column;
-      align-items:stretch;
-      min-height:100vh;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    header{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      padding:12px 18px;
-      border-bottom:1px solid rgba(255,255,255,0.03);
-      background:linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.02));
-      position:sticky; top:0; z-index:50;
-    }
-    .title { font-weight:800; color:var(--accent); font-size:1.05rem; }
-    .link { color:#9bdff8; text-decoration:none; font-weight:700; font-size:0.95rem; }
-
-    main.stage{
-      flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
-      padding:18px; gap:10px;
+    body {
+      background: radial-gradient(circle at top, #062b45, #021019);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
     }
 
-    /* arena layout: left - vs - right */
+    header {
+      width: 100%;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #00a693;
+      color: #fff;
+    }
+
+    .site-title {
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    /* دکمه لینک آپارات */
+    .aparat-btn {
+      text-decoration: none;
+      background: #ff1744;
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.25);
+    }
+    .aparat-btn span {
+      font-size: 17px;
+    }
+
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 480px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 20px;
+      margin-bottom: 4px;
+    }
+    .subtitle {
+      font-size: 13px;
+      opacity: 0.85;
+      margin-bottom: 18px;
+    }
+
+    #startBtn {
+      margin-bottom: 14px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: none;
+      background: #00c853;
+      color: #001510;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(0, 200, 83, 0.45);
+    }
+    #startBtn:active {
+      transform: translateY(1px);
+      box-shadow: 0 3px 10px rgba(0, 200, 83, 0.35);
+    }
+
+    .tip {
+      font-size: 12px;
+      opacity: 0.8;
+      margin-bottom: 16px;
+    }
+
     .arena {
-      width:100%; max-width:1100px; display:flex; align-items:center; justify-content:space-between;
-      gap:20px; padding:12px;
+      width: 100%;
+      max-width: 420px;
+      background: radial-gradient(circle at top, #0b2540, #020a12);
+      border-radius: 18px;
+      padding: 14px;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.45);
+      display: none;
+      position: relative;
+      overflow: hidden;
     }
 
-    .card {
-      width:48%; min-width:240px; background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12));
-      border-radius:12px; padding:18px; text-align:center; cursor:pointer; transition:transform .15s, box-shadow .15s;
-      border:1px solid rgba(255,255,255,0.02);
-      box-shadow:0 8px 20px rgba(2,6,23,0.6);
-      display:flex; flex-direction:column; gap:8px; align-items:center; justify-content:center;
-    }
-    .card.left { align-items:flex-end; direction:rtl; } /* float right visually for RTL */
-    .card.right { align-items:flex-start; direction:ltr; } /* show English left-to-right inside */
-
-    .card h2 { margin:0; font-size:1.25rem; color:var(--accent); font-weight:800; }
-    .card p.fa { margin:0; font-size:1rem; color:#cfe; opacity:0.95; }
-    .card p.en { margin:0; font-size:0.95rem; color:#9bdff8; opacity:0.95; }
-
-    .vs {
-      width:4%; min-width:56px; text-align:center; color:var(--accent); font-weight:900; font-size:1.15rem;
+    .vs-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 26px;
+      font-weight: 800;
+      color: #ff4444;
+      text-shadow: 0 0 10px rgba(0,0,0,0.7);
     }
 
-    .winner {
-      box-shadow:0 0 30px rgba(255,215,0,0.28);
-      border:1px solid rgba(255,215,0,0.25);
-      transform:scale(1.02);
-      color:var(--accent);
+    .player-slot {
+      width: 48%;
+      min-height: 70px;
+      border-radius: 16px;
+      padding: 10px;
+      background: linear-gradient(145deg, rgba(0, 230, 118, 0.2), rgba(0, 188, 212, 0.18));
+      border: 1px solid rgba(0, 255, 204, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+      backdrop-filter: blur(6px);
     }
 
-    .controls {
-      display:flex; gap:12px; align-items:center; justify-content:center; margin-bottom:6px;
-    }
-    .btn {
-      background:var(--green); color:#00140e; border:0; padding:10px 14px; border-radius:8px; font-weight:800; cursor:pointer;
+    .players-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-top: 12px;
     }
 
-    .info {
-      margin-top:12px; color:#cde; font-weight:700; text-align:center;
+    .player-slot span {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .player-slot:hover {
+      box-shadow: 0 0 16px rgba(0,255,204,0.45);
+    }
+    .player-slot.winner {
+      background: linear-gradient(135deg, #00e676, #1de9b6);
+      color: #00120b;
+      box-shadow: 0 0 22px rgba(0, 230, 118, 0.7);
+      transform: scale(1.03);
+    }
+
+    .status {
+      margin-top: 16px;
+      font-size: 13px;
+      line-height: 1.7;
     }
 
     footer {
-      padding:12px; text-align:center; border-top:1px solid rgba(255,255,255,0.03); background:linear-gradient(180deg, rgba(0,0,0,0.02), transparent);
-      font-size:0.95rem;
-    }
-    footer a{ color:#9bdff8; text-decoration:none; font-weight:700 }
-
-    @media(max-width:880px){
-      .arena{flex-direction:column; align-items:stretch}
-      .card{width:100%; min-width:unset}
-      .vs{display:none}
-      .card.left{align-items:center; direction:rtl}
-      .card.right{align-items:center; direction:rtl}
+      font-size: 11px;
+      padding: 8px;
+      opacity: 0.7;
+      text-align: center;
+      width: 100%;
     }
   </style>
 </head>
 <body>
+
+  <!-- هدر + دکمه آپارات -->
   <header>
-    <div class="title">🏆 P.Win Football Arena – Battle of Legends</div>
-    <a class="link" href="https://www.aparat.com/p_win" target="_blank">🎥 aparat.com/p_win</a>
+    <div class="site-title">P.Win Football Arena</div>
+    <a href="https://www.aparat.com/p_win" class="aparat-btn" target="_blank" rel="noopener">
+      <span>🎬</span>
+      <span>Aparat Channel</span>
+    </a>
   </header>
 
-  <main class="stage">
-    <div class="controls">
-      <button id="startBtn" class="btn">Start Game</button>
+  <main>
+    <h1>Battle of Legends ⚽</h1>
+    <p class="subtitle">هر بار یک نبرد جدید، یک قهرمان جدید!</p>
+
+    <button id="startBtn">Start Game</button>
+    <p class="tip">Double-click / double-tap روی بازیکن قهرمان 👉</p>
+
+    <div class="arena" id="arena">
+      <div class="vs-label">VS</div>
+      <div class="players-row">
+        <div id="player1" class="player-slot"><span>Player 1</span></div>
+        <div id="player2" class="player-slot"><span>Player 2</span></div>
+      </div>
+
+      <div class="status" id="statusText">
+        آماده‌ای؟ «Start Game» رو بزن تا رقابت شروع بشه.
+      </div>
     </div>
-
-    <section id="arena" class="arena" aria-live="polite">
-      <!-- left card, vs, right card injected here -->
-    </section>
-
-    <div id="info" class="info">Double-click (desktop) or double-tap (mobile) on the player you choose as winner.</div>
   </main>
 
-  <footer>© P.Win — <a href="https://www.aparat.com/p_win" target="_blank">aparat.com/p_win</a></footer>
+  <footer>© P.Win</footer>
 
   <script>
-    // ===== players: english + persian names (includes Shrek, Antony, Harry Maguire) =====
+    // ===== players (انگلیسی فقط) =====
     const players = [
-      {en:"Shrek", fa:"شرک 🧅"},
-      {en:"Nicolas 😏 Jackson", fa:"نیکلاس 🤌 جکسن"},
-      {en:"Antony", fa:"آنتونی ⚽"},
-      {en:"Harry Maguire", fa:"هری مگوایر 🧱"},
-      {en:"Lionel Messi", fa:"مسی"},
-      {en:"Cristiano Ronaldo", fa:"کریستیانو رونالدو"},
-      {en:"Neymar Jr", fa:"نیمار"},
-      {en:"Kylian Mbappé", fa:"کیلیان ام‌باپه"},
-      {en:"Erling Haaland", fa:"ارلینگ هالند"},
-      {en:"Ronaldinho", fa:"رونالدینیو"},
-      {en:"Pelé", fa:"پله"},
-      {en:"Diego Maradona", fa:"دیگو مارادونا"},
-      {en:"Zinedine Zidane", fa:"زین‌الدین زیدان"},
-      {en:"David Beckham", fa:"دیوید بکام"},
-      {en:"Kaká", fa:"کاکا"},
-      {en:"Xavi", fa:"ژاوی"},
-      {en:"Andrés Iniesta", fa:"اینیستا"},
-      {en:"Francesco Totti", fa:"فرانچسکو توتی"},
-      {en:"Robin van Persie", fa:"روبین فن پرسی"},
-      {en:"Roberto Carlos", fa:"روبرتو کارلوس"},
-      {en:"Sergio Ramos", fa:"سرخیو راموس"},
-      {en:"Luis Figo", fa:"لوئیس فیگو"},
-      {en:"Luis Suárez", fa:"لوئیس سوارز"},
-      {en:"Robert Lewandowski", fa:"روبرت لواندوفسکی"},
-      {en:"Luka Modrić", fa:"لوکا مودریچ"},
-      {en:"Karim Benzema", fa:"کریم بنزما"},
-      {en:"Mohamed Salah", fa:"محمد صلاح"},
-      {en:"Kevin De Bruyne", fa:"کوین دی‌بروینه"},
-      {en:"Paul Pogba", fa:"پل پوگبا"},
-      {en:"Antoine Griezmann", fa:"آنتوان گریزمان"},
-      {en:"Toni Kroos", fa:"تونی کروس"},
-      {en:"Sergio Busquets", fa:"سرخیو بوسکتس"},
-      {en:"Wayne Rooney", fa:"وین رونی"},
-      {en:"Frank Lampard", fa:"فرانک لمپارد"},
-      {en:"Steven Gerrard", fa:"استیون جرارد"},
-      {en:"Alan Shearer", fa:"آلن شیرر"},
-      {en:"Paolo Maldini", fa:"پائولو مالدینی"},
-      {en:"Gianluigi Buffon", fa:"جان‌لوئیجی بوفون"},
-      {en:"Yashin", fa:"یاشین"},
-      {en:"George Weah", fa:"جورج وه‌آ"},
-      {en:"Roberto Baggio", fa:"روبرتو باجو"},
-      {en:"Gareth Bale", fa:"گرت بیل"},
-      {en:"John Terry", fa:"جان تری"},
-      {en:"Antonio Rudiger", fa:"آنتونیو رودیگر"},
-      {en:"Marcos Llorente", fa:"مارکوس یورنته"},
-      {en:"Pedri", fa:"پدری"},
-      {en:"Gavi", fa:"گاوی"},
-      {en:"Bruno Fernandes", fa:"برونو فرناندز"},
-      {en:"Jadon Sancho", fa:"جادون سانچو"},
-      {en:"Phil Foden", fa:"فیل فودن"},
-      {en:"Roberto Firmino", fa:"روبرتو فیرمینو"},
-      {en:"Sadio Mané", fa:"سادیو مانه"},
-      {en:"Jamie Vardy", fa:"جیمی واردی"},
-      {en:"Harry Kane", fa:"هری کین"},
-      {en:"Marcus Rashford", fa:"مارکوس راشفورد"},
+      "Shrek 🧅","Antony ⚽","Harry Maguire 🧱","Lionel Messi",
+      "Cristiano Ronaldo","Neymar Jr","Kylian Mbappé","Erling Haaland",
+      "Ronaldinho","Pelé","Diego Maradona","Zinedine Zidane","David Beckham",
+      "Kaká","Xavi","Andrés Iniesta","Francesco Totti","Robin van Persie",
+      "Roberto Carlos","Sergio Ramos","Luis Figo","Luis Suárez",
+      "Robert Lewandowski","Luka Modrić","Karim Benzema","Mohamed Salah",
+      "Kevin De Bruyne","Paul Pogba","Antoine Griezmann","Toni Kroos",
+      "Sergio Busquets","Virgil van Dijk","Sadio Mané","Eden Hazard",
+      "Raheem Sterling","Harry Kane","Son Heung-min","Pierre-Emerick Aubameyang",
+      "Romelu Lukaku","Zlatan Ibrahimović","Andrea Pirlo","Carlos Tevez",
+      "Mesut Özil","Ángel Di María","David Villa","Gerard Piqué",
+      "Marco Reus","Thiago Silva","Marcelo","Giorgio Chiellini",
+      "Manuel Neuer","Jan Oblak","Gianluigi Buffon","Riyad Mahrez",
+      "Jadon Sancho","Phil Foden","Pedri","Gavi","João Félix",
+      "Bruno Fernandes","Joshua Kimmich","Thomas Müller","Kingsley Coman",
+      "Leroy Sané","Joshua Zirkzee","Federico Chiesa","Ciro Immobile",
+      "Hugo Lloris","N'Golo Kanté","Mason Mount","Reece James",
+      "Kai Havertz","Jorginho","Christian Pulisic","Hakim Ziyech",
+      "João Cancelo","Rúben Dias","Trent Alexander-Arnold","Andrew Robertson",
+      "Alisson Becker","Ederson","Casemiro","Vinícius Jr","Rodrygo",
+      "Gabriel Jesus","Bernardo Silva","Raphinha","Ousmane Dembélé",
+      "Ansu Fati","Memphis Depay","Frenkie de Jong","Jules Koundé",
+      "Raphaël Varane","Marcus Rashford","Jude Bellingham","Erik ten Hag?",
+      "Nicolas 😏 Jackson"
+    ];
+
+    const startBtn = document.getElementById("startBtn");
+    const arena = document.getElementById("arena");
+    const player1Div = document.getElementById("player1");
+    const player2Div = document.getElementById("player2");
+    const statusText = document.getElementById("statusText");
+
+    let currentChampion = null;
+    let currentOpponent = null;
+    let remaining = [];
+
+    function shuffle(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
+
+    function startGame() {
+      remaining = [...players];
+      shuffle(remaining);
+
+      currentChampion = remaining.pop();
+      currentOpponent = remaining.pop();
+
+      arena.style.display = "block";
+      updateView("بازی شروع شد! روی قهرمان دوبار کلیک کن.");
+    }
+
+    function showPlayers() {
+      player1Div.classList.remove("winner");
+      player2Div.classList.remove("winner");
+
+      player1Div.querySelector("span").textContent = currentChampion;
+      player2Div.querySelector("span").textContent = currentOpponent;
+    }
+
+    function updateView(extra = "") {
+      showPlayers();
+      const left = remaining.length;
+      statusText.innerHTML =
+        (extra ? extra + "<br>" : "") +
+        (left > 0
+          ? `قهرمان فعلی دوبار انتخاب می‌شود و با حریف بعدی می‌جنگد. بازیکن‌های باقی‌مانده: ${left}`
+          : "این آخرین نبرده! هر که برنده بشه، قهرمان نهایی می‌شه. 🏆");
+    }
+
+    function chooseWinner(slot) {
+      if (!currentChampion || !currentOpponent) return;
+
+      const winnerIsChampion = (slot === "champion");
+      const winnerName = winnerIsChampion ? currentChampion : currentOpponent;
+
+      if (!winnerIsChampion) {
+        // اگر حریف رو انتخاب کردیم، اون می‌شه قهرمان جدید
+        currentChampion = currentOpponent;
+      }
+
+      player1Div.classList.remove("winner");
+      player2Div.classList.remove("winner");
+      if (winnerIsChampion) {
+        player1Div.classList.add("winner");
+      } else {
+        player2Div.classList.add("winner");
+      }
+
+      if (remaining.length === 0) {
+        statusText.innerHTML =
+          `🏆 قهرمان نهایی: <strong>${currentChampion}</strong><br>برای شروع دوباره، دوباره روی "Start Game" بزن.`;
+        return;
+      }
+
+      currentOpponent = remaining.pop();
+      setTimeout(() => {
+        updateView(`برنده: <strong>${winnerName}</strong> ✅`);
+      }, 350);
+    }
+
+    startBtn.addEventListener("click", () => {
+      startGame();
+      updateView();
+    });
+
+    // دوبل کلیک / دوبل تپ
+    player1Div.addEventListener("dblclick", () => chooseWinner("champion"));
+    player2Div.addEventListener("dblclick", () => chooseWinner("opponent"));
+    player1Div.addEventListener("touchend", (e) => {
+      if (e.detail === 2) chooseWinner("champion");
+    });
+    player2Div.addEventListener("touchend", (e) => {
+      if (e.detail === 2) chooseWinner("opponent");
+    });
+  </script>
+</body>
+</html>      {en:"Marcus Rashford", fa:"مارکوس راشفورد"},
       {en:"Gabriel Jesus", fa:"گابریل ژسوس"},
       {en:"Lautaro Martínez", fa:"لاوتارو مارتینز"},
       {en:"Andrew Robertson", fa:"اندرو رابرتسون"},
